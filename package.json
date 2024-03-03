@@ -1,0 +1,23 @@
+{
+  "name": "partial-csv-reader",
+  "version": "0.1.0",
+  "description": "A library to parse any part of a large CSV file",
+  "homepage": "https://github.com/ptvty/partial-csv-reader",
+  "main": "src/index.ts",
+  "keywords": ["csv", "reader", "parser", "partial"],
+  "author": "ptvty",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --mode production",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
+  }
+}
