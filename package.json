@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "description": "A library to parse any part of a large CSV file",
   "homepage": "https://github.com/ptvty/partial-csv-reader",
-  "main": "src/index.ts",
+  "main": "dist/lib/index.js",
   "keywords": ["csv", "reader", "parser", "partial"],
   "author": "ptvty",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "tsc && webpack --mode production ",
     "test": "jest"
   },
   "devDependencies": {
