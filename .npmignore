@@ -2,5 +2,7 @@
 **/tsconfig.json
 **/webpack.config.js
 
+coverage
 node_modules
 src
+example
