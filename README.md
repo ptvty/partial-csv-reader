@@ -2,6 +2,7 @@
 A library to parse any part of a large CSV file
 
 [![npm version](https://badge.fury.io/js/partial-csv-reader.svg)](https://badge.fury.io/js/partial-csv-reader)
+[![codecov](https://codecov.io/github/ptvty/partial-csv-reader/graph/badge.svg?token=MJETYS0G8L)](https://codecov.io/github/ptvty/partial-csv-reader)
 
 ## Installation
 
