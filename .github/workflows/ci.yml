@@ -1,4 +1,4 @@
-name: Workflow for partial-csv-reader
+name: CI
 on: [push, pull_request]
 jobs:
   run:
@@ -17,7 +17,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4-beta
         with:
-          flags: smart-tests
+          flags: unit
           verbose: true
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
