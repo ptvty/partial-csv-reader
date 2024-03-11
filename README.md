@@ -1,6 +1,8 @@
 # 𝄜 Partial CSV Reader
 A library to parse any part of a large CSV file
 
+[![npm version](https://badge.fury.io/js/partial-csv-reader.svg)](https://badge.fury.io/js/partial-csv-reader)
+
 ## Installation
 
     npm i partial-csv-reader
