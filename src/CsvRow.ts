@@ -1,3 +1,4 @@
+import { Config } from './Config';
 import { CELL_DELIM, ROW_DELIM, scanForNextChar, scanForNextCharReverse } from './utils';
 
 export class CsvRow {
@@ -6,17 +7,21 @@ export class CsvRow {
     private csvBlob;
     private rowCursor: number | null = 0;
     private rowBlob;
+    private rowDelim;
+    private cellDelim;
 
-    constructor(csvBlob: Blob, rowStartInBlob: number, rowEndInBlob: number) {
+    constructor(csvBlob: Blob, rowStartInBlob: number, rowEndInBlob: number, config?: Config) {
         this.csvBlob = csvBlob;
         this.start = rowStartInBlob;
         this.end = rowEndInBlob;
         this.rowBlob = csvBlob.slice(rowStartInBlob, rowEndInBlob);
+        this.rowDelim = config?.rowDelim || ROW_DELIM;
+        this.cellDelim = config?.cellDelim || CELL_DELIM;
     }
 
     async nextRow() {
         if (this.start === null) return null;
-        const nextRowStartInBlob = this.end + ROW_DELIM.length;
+        const nextRowStartInBlob = this.end + this.rowDelim.length;
         if (nextRowStartInBlob >= this.csvBlob.size) {
             // Reached end of file
             return null;
@@ -35,7 +40,7 @@ export class CsvRow {
 
     async prevRow() {
         if (this.start === null) return null;
-        const prevRowEndInBlob = this.start - ROW_DELIM.length;
+        const prevRowEndInBlob = this.start - this.rowDelim.length;
         if (prevRowEndInBlob <= 0) {
             // Reached start of file
             return null;
@@ -43,7 +48,7 @@ export class CsvRow {
         let prevRowStart = await this.prevRowOffset(prevRowEndInBlob);
         const prevRowStartInBlob = prevRowStart === null
             ? 0
-            : prevRowStart + CELL_DELIM.length;
+            : prevRowStart + this.cellDelim.length;
         if (prevRowStartInBlob >= prevRowEndInBlob) {
             // Reached start of file            
             return null;
@@ -53,18 +58,18 @@ export class CsvRow {
     }
 
     private async nextRowOffset(start: number) {        
-        let rowStartInBlob = await scanForNextChar(this.csvBlob, start, ROW_DELIM);
+        let rowStartInBlob = await scanForNextChar(this.csvBlob, start, this.rowDelim);
         // Try to escape from double-quoted initial cursor position
         if (rowStartInBlob === null)
-        rowStartInBlob = await scanForNextChar(this.csvBlob, start, ROW_DELIM, true);
+        rowStartInBlob = await scanForNextChar(this.csvBlob, start, this.rowDelim, true);
         return rowStartInBlob;
     }
 
     private async prevRowOffset(start: number) {
-        let prevRowStart = await scanForNextCharReverse(this.csvBlob, start, ROW_DELIM);        
+        let prevRowStart = await scanForNextCharReverse(this.csvBlob, start, this.rowDelim);        
         // Try to escape from double-quoted initial cursor position
         if (prevRowStart === null)
-            prevRowStart = await scanForNextCharReverse(this.csvBlob, start, ROW_DELIM, true);
+            prevRowStart = await scanForNextCharReverse(this.csvBlob, start, this.rowDelim, true);
         return prevRowStart;
     }
 
@@ -91,11 +96,11 @@ export class CsvRow {
         if (cellText.length > 3 && cellText.startsWith('"') && cellText.endsWith('"')) {
             cellText = cellText.substring(1, cellText.length - 1);
         }
-        this.rowCursor = nextOffset === null ? null : nextOffset + CELL_DELIM.length;
+        this.rowCursor = nextOffset === null ? null : nextOffset + this.cellDelim.length;
         return cellText;
     }
 
     private async nextCellOffset(file: Blob, byte: number) {
-        return await scanForNextChar(file, byte, CELL_DELIM);
+        return await scanForNextChar(file, byte, this.cellDelim);
     }
 }

@@ -13,7 +13,7 @@ const MALFORMED_CSV_STR = `hello world`;
 describe('CsvReader', () => {
 
     const file = new File([TEST_CSV_STR], 'test.csv');
-    const csvReader = new CsvReader(file);
+    const csvReader = new CsvReader(file, { rowDelim: "\n", cellDelim: "," });
 
     test('CsvReader.getFirstRow to return valid CsvRow', async () => {
         const firstRow = await csvReader.getFirstRow();
